@@ -14,12 +14,13 @@ import {
 import React from "react";
 
 import Svg, { Path } from "react-native-svg";
+import Button from "../../components/Button";
 
 export default function Home() {
   return (
     <SafeAreaView style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View>
+        <View style={{flex: 1}}>
           <View style={styles.box}>
             <Svg
               height={200}
@@ -42,7 +43,8 @@ export default function Home() {
           </View>
 
           <View style={styles.textBoxContainer}>
-            <View>
+            <View style={styles.textBoxGroup}>
+              <Text style={styles.textBoxUnit}>$</Text>
               <TextInput
                 style={styles.textBox}
                 placeholder="Monto"
@@ -52,8 +54,9 @@ export default function Home() {
               ></TextInput>
             </View>
 
-            <View>
-            <TextInput
+            <View style={styles.textBoxGroup}>
+              <Text style={styles.textBoxUnit}>%</Text>
+              <TextInput
                 style={styles.textBox}
                 placeholder="Porcentaje"
                 keyboardType="numeric"
@@ -61,14 +64,14 @@ export default function Home() {
                 placeholderTextColor="#00cba9"
               ></TextInput>
             </View>
+          </View>
 
-            <TouchableOpacity
-              onPress={() => {
-                Keyboard.dismiss();
-              }}
-            >
-              <Text>Calcular</Text>
-            </TouchableOpacity>
+          <Button label="Calcular" onPress={onCalcular}></Button>
+
+          <View style={styles.panel}>
+            <View style={styles.panelContent}>
+              <Text style={styles.panelText}>Total:</Text>
+            </View>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -76,9 +79,31 @@ export default function Home() {
   );
 }
 
+const onCalcular = () => {
+  alert("Calculando propina!");
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  panel: {
+    marginTop: 50,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignContent: "center"
+  },
+  panelContent: {
+    padding: 5,
+    width: 300,
+    height: 100,
+    backgroundColor: "#00cba9",
+  },
+  panelText: {
+    textAlign: "center",
+    fontSize: 25,
+    color: "#000"
   },
   header: {
     marginTop: -40,
@@ -105,12 +130,24 @@ const styles = StyleSheet.create({
   textBoxContainer: {
     marginTop: 60,
   },
+  textBoxGroup: {
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    marginHorizontal: 20,
+    marginVertical: 5,
+  },
   textBox: {
-    fontSize: 40,
+    flex: 7,
+    fontSize: 25,
     color: "#00cba9",
     borderColor: "#ccc",
     borderBottomWidth: 3,
-    marginHorizontal: 20,
+  },
+  textBoxUnit: {
+    flex: 1,
+    fontSize: 25,
+    color: "#00cba9",
   },
   textBoxContent: {},
 });
