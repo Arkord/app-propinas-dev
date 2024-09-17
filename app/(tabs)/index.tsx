@@ -11,16 +11,40 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 
 import Svg, { Path } from "react-native-svg";
 import Button from "../../components/Button";
+import InputSpinner from "react-native-input-spinner";
 
 export default function Home() {
+  const [amount, setAmount] = useState("");
+  const [percent, setPercent] = useState("");
+  const [total, setTotal] = useState("0");
+
+  const onCalcular = () => {
+    if (amount.length > 0 && percent.length > 0) {
+      let cTotal = (parseFloat(amount) * (100 + parseFloat(percent))) / 100;
+      setTotal(cTotal.toString());
+    } else {
+      setTotal("0");
+    }
+
+    Keyboard.dismiss();
+  };
+
+  const validateAndSet = (value: any, setValue: any) => {
+    const regex = /^\d*\.?\d{0,2}$/;
+
+    if (regex.test(value)) {
+      setValue(value);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <View style={styles.box}>
             <Svg
               height={200}
@@ -48,9 +72,13 @@ export default function Home() {
               <TextInput
                 style={styles.textBox}
                 placeholder="Monto"
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 underlineColorAndroid="transparent"
                 placeholderTextColor="#00cba9"
+                value={amount}
+                onChangeText={(value) => {
+                  validateAndSet(value, setAmount);
+                }}
               ></TextInput>
             </View>
 
@@ -62,15 +90,37 @@ export default function Home() {
                 keyboardType="numeric"
                 underlineColorAndroid="transparent"
                 placeholderTextColor="#00cba9"
+                value={percent}
+                onChangeText={(value) => {
+                  validateAndSet(value, setPercent);
+                }}
               ></TextInput>
             </View>
           </View>
 
-          <Button label="Calcular" onPress={onCalcular}></Button>
+          <View style={styles.spinnerContainer}>
+            <Text style={styles.themeText}>Personas</Text>
+            <InputSpinner
+              rounded={false}
+              max={10}
+              min={1}
+              step={1}
+              color="#00cba9"
+              textColor="#00cba9"
+              fontSize={24}
+              onChange={(num) => {
+                console.log(num);
+              }}
+            />
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <Button label="Calcular" onPress={onCalcular}></Button>
+          </View>
 
           <View style={styles.panel}>
             <View style={styles.panelContent}>
-              <Text style={styles.panelText}>Total:</Text>
+              <Text style={styles.panelText}>Total: ${total}</Text>
             </View>
           </View>
         </View>
@@ -79,20 +129,21 @@ export default function Home() {
   );
 }
 
-const onCalcular = () => {
-  alert("Calculando propina!");
-};
-
 const styles = StyleSheet.create({
+  themeText: {
+    color: "#00cba9",
+    marginVertical: 2
+  },
   container: {
     flex: 1,
   },
   panel: {
-    marginTop: 50,
+    position: "absolute",
+    bottom: 0,
     width: "100%",
     flexDirection: "row",
     justifyContent: "center",
-    alignContent: "center"
+    alignContent: "center",
   },
   panelContent: {
     padding: 5,
@@ -103,7 +154,7 @@ const styles = StyleSheet.create({
   panelText: {
     textAlign: "center",
     fontSize: 25,
-    color: "#000"
+    color: "#000",
   },
   header: {
     marginTop: -40,
@@ -138,16 +189,25 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   textBox: {
-    flex: 7,
+    flex: 1,
     fontSize: 25,
     color: "#00cba9",
     borderColor: "#ccc",
     borderBottomWidth: 3,
   },
   textBoxUnit: {
-    flex: 1,
+    width: 25,
     fontSize: 25,
     color: "#00cba9",
+  },
+  spinnerContainer: {
+    marginVertical: 10,
+    marginHorizontal: 22
+  },
+  buttonContainer: {
+    marginTop: 10,
+    justifyContent: "center",
+    alignItems: "center",
   },
   textBoxContent: {},
 });

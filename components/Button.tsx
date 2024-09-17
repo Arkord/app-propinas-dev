@@ -22,9 +22,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: 320,
     height: 68,
+    padding: 3,
     alignItems: "center",
     justifyContent: "center",
-    padding: 3,
   },
   button: {
     width: "50%",
@@ -32,8 +32,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
-    backgroundColor: "#00cba9",
-    marginTop: 40,
+    backgroundColor: "#00cba9"
   },
   buttonIcon: {
     color: "#000",
